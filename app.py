@@ -14,3 +14,10 @@ options.add_argument("--window-size=1920x1080")
 options.add_argument("--disable-features=VizDisplayCompositor")
 
 st.write('test')
+
+def Run():
+  with webdriver.Chrome(options=options) as driver: 
+    url = 'https://google.com'
+    driver.get(url)
+    
+Run()
