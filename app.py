@@ -19,5 +19,6 @@ def Run():
   with webdriver.Chrome(options=options) as driver: 
     url = 'https://google.com'
     driver.get(url)
+    st.write(driver.current_url)
     
 Run()
