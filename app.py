@@ -124,7 +124,7 @@ def Run():
         if count > 0:
             time.sleep(wait)
         count = int(count) + 1
-        Login(driver, URL, SHOP_CODE, ID, PWD, cnt)
+        Login(driver, URL, SHOP_CODE, ID, PWD, count)
 
     st.write('[' + nowDatetime + '] 로그인 테스트 stop')
     send_msg('로그인 테스트 stop')
