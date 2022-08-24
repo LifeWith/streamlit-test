@@ -130,10 +130,7 @@ def Run():
     send_msg('로그인 테스트 stop')
     
     
-if st.button('TEST'):
-    if ValidCheck():
-        Run()
-        
+
 if START_BUTTON:
     if ValidCheck():
         RUN = True
