@@ -75,12 +75,44 @@ def Login(driver, url, shopCode, id, pwd):
 
     except Exception as e:
         st.write(e)
+
+
+def ValidCheck():
+    if URL == '':
+        st.write('URL을 입력하세요.')
+        return False
+    elif SHOP_CODE == '':
+        st.write('샵코드를 입력하세요.')
+        return False
+    elif ID == '':
+        st.write('ID를 입력하세요.')
+        return False
+    elif PWD == '':
+        st.write('비밀번호를 입력하세요.')
+        return False
+    elif HOOK == '':
+        st.write('HOOK 주소를 입력하세요.')
+        return False
+    else:
+        return True        
+        
         
 def Run():
   with webdriver.Chrome(options=options) as driver: 
     Login(driver, URL, SHOP_CODE, ID, PWD)
-    st.write(driver.current_url)
+    
+    now = datetime.datetime.now()
+    nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
+    if driver.current_url == URL + '/CRM.LoadPage':
+        st.write('[' + nowDatetime + '] 로그인 성공-')
+        #if cnt%10 == 1:
+        send_msg('로그인 성공')
+    else:
+        st.write('[' + nowDatetime + '] 로그인 실패')
+        send_msg('로그인 실패')
+    # st.write(driver.current_url)
     
 if st.button('TEST'):
-    send_msg('테스트 ')
-    Run()
+    if ValidCheck():
+        send_msg('테스트 ')
+        Run()
