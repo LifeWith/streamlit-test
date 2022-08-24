@@ -7,10 +7,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 
 options = Options()
-#options.add_argument("--headless")
+options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
-#options.add_argument("--disable-gpu")
+options.add_argument("--disable-gpu")
 options.add_argument("--disable-features=NetworkService")
 options.add_argument("--window-size=1920x1080")
 options.add_argument("--disable-features=VizDisplayCompositor")
@@ -49,9 +49,8 @@ def send_msg(title:str):
         raise Exception(response.status_code, response.text)
 
 
-def Login(driver, url, shopCode, id, pwd):
+def Login(driver, url, shopCode, id, pwd, cnt:int):
     try:
-        # 칵테일 접속
         driver.get(url)
 
         # 1초 대기
@@ -72,6 +71,16 @@ def Login(driver, url, shopCode, id, pwd):
 
         elem = driver.find_element(By.CLASS_NAME, "loginBT_c")
         elem.click()
+        
+        now = datetime.datetime.now()
+        nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
+        if driver.current_url == URL + '/CRM.LoadPage':
+            st.write('[' + nowDatetime + '] 로그인 성공-' + str(cnt))
+            #if cnt%10 == 1:
+            send_msg('로그인 성공' + str(cnt))
+        else:
+            st.write('[' + nowDatetime + '] 로그인 실패' )
+            send_msg('로그인 실패')
 
     except Exception as e:
         st.write(e)
@@ -99,20 +108,24 @@ def ValidCheck():
         
 def Run():
   with webdriver.Chrome(options=options) as driver: 
-    Login(driver, URL, SHOP_CODE, ID, PWD)
     
     now = datetime.datetime.now()
     nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
-    if driver.current_url == URL + '/CRM.LoadPage':
-        st.write('[' + nowDatetime + '] 로그인 성공-')
-        #if cnt%10 == 1:
-        send_msg('로그인 성공')
-    else:
-        st.write('[' + nowDatetime + '] 로그인 실패')
-        send_msg('로그인 실패')
-    # st.write(driver.current_url)
+    st.write('[' + nowDatetime + '] 로그인 테스트 start')
+    send_msg('로그인 테스트 start')
+
+    count = 0
+    wait = 10
+    while RUN == True:
+        if count > 0:
+            time.sleep(wait)
+        count = int(count) + 1
+        Login(driver, URL, SHOP_CODE, ID, PWD, cnt)
+
+    st.write('[' + nowDatetime + '] 로그인 테스트 stop')
+    send_msg('로그인 테스트 stop')
+    
     
 if st.button('TEST'):
     if ValidCheck():
-        send_msg('테스트 ')
         Run()
