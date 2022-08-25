@@ -79,16 +79,16 @@ def Login(driver, url, shopCode, id, pwd, cnt:int):
         now = datetime.datetime.now()
         nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
         if driver.current_url == URL + '/CRM.LoadPage':
-            st.write('[' + nowDatetime + '] 로그인 성공-' + str(cnt))
-            #if cnt%10 == 1:
-            send_msg('로그인 성공' + str(cnt))
+            st.write('[' + nowDatetime + '] ' + URL + ' 로그인 성공-' + str(cnt))
+            if cnt%10 == 1:
+                send_msg(URL + ' 로그인 성공-' + str(cnt))
         else:
-            st.write('[' + nowDatetime + '] 로그인 실패' )
-            send_msg('로그인 실패')
+            st.write('[' + nowDatetime + '] ' + URL + ' 로그인 실패' )
+            send_msg(URL + '로그인 실패')
 
     except Exception as e:
-        st.write(e)
-
+        st.write(URL + '-' + e)
+        send_msg(URL + ' Exception 발생')
 
 def ValidCheck():
     if URL == '':
@@ -115,19 +115,19 @@ def Run():
     
     now = datetime.datetime.now()
     nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
-    st.write('[' + nowDatetime + '] 로그인 테스트 start')
-    send_msg('로그인 테스트 start')
+    st.write('[' + nowDatetime + '] ' + URL + ' 로그인 테스트 start')
+    send_msg(URL + ' 로그인 테스트 start')
 
     count = 0
-    wait = 10
+    wait = 60 # 초단위
     while RUN == True:
         if count > 0:
             time.sleep(wait)
         count = int(count) + 1
         Login(driver, URL, SHOP_CODE, ID, PWD, count)
 
-    st.write('[' + nowDatetime + '] 로그인 테스트 stop')
-    send_msg('로그인 테스트 stop')
+    st.write('[' + nowDatetime + '] ' + URL + ' 로그인 테스트 stop')
+    send_msg(URL + ' 로그인 테스트 stop')
     
     
 
