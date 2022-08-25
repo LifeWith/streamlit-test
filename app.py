@@ -16,14 +16,14 @@ options.add_argument("--window-size=1920x1080")
 options.add_argument("--disable-features=VizDisplayCompositor")
 
 # st.write('test')
-URL = st.text_input('로그인 할 주소를 입력하세요.')
+URL = st.text_input('로그인 할 주소를 입력하세요.(끝에 / 빼고)')
 SHOP_CODE = st.text_input('로그인 할 샵코드를 입력하세요.')
 ID = st.text_input('로그인할 아이디를 입력하세요.')
 PWD = st.text_input('로그인할 비밀번호를 입력하세요')
 HOOK = st.text_input('알림 받을 슬랙 채널 hook 주소를 입력하세요.')
 
 START_BUTTON = st.button('테스트 start')
-STOP_BUTTON = st.button('테스트 stop')
+STOP_BUTTON = st.button('테스트 stop(대기시간 지나고 다음 순번에 중단됨)')
 RUN = True
 
 def send_msg(title:str):
@@ -119,7 +119,7 @@ def Run():
     send_msg(URL + ' 로그인 테스트 start')
 
     count = 0
-    wait = 60 # 초단위
+    wait = 10 # 초단위
     while RUN == True:
         if count > 0:
             time.sleep(wait)
